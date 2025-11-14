@@ -40,7 +40,10 @@ public abstract class MixinScreen {
             ci.cancel(); return;
         }
         if (!BlurConfig.excludedScreens.contains(this.getClass().getCanonicalName()))
+        {
+            BlurInfo.prevScreenHasBlur = BlurInfo.screenHasBlur;
             BlurInfo.screenHasBlur = true; // Test if the screen has blur
+        }
     }
 
     @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;renderBackgroundTexture(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/util/Identifier;IIFFII)V"), method = "renderDarkening(Lnet/minecraft/client/gui/DrawContext;IIII)V")
