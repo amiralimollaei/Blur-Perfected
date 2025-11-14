@@ -1,3 +1,15 @@
+# Blur Perfected
+A fork of Blur+ that fixes blur animation calculation bugs and simplifies the logic
+
+Changes made:
+ - Spam Proof: fixes bugs related to "spamming" GUIs updates (GUIs changing too quickly, e.g. holding the E key)
+ - Smoother animations: fixes bugs where frames of the fade in/out animation was skipped
+ - Simpler Logic: uses fewer Mixins, thus enabling more compatibility
+ - Fix Persistant Blur Issues: Fixes bugs were the blur effect was not cleared even after closing all GUIs
+
+
+### original README
+
 Ever thought that the world behind your inventory was just too distracting?  
 Or that the default Minecraft blur effect is just too boring?  
 Then this mod is just right for you!
