@@ -3,14 +3,14 @@ A fork of Blur+ that fixes blur animation calculation bugs and simplifies the lo
 
 Changes made:
  - Spam Proof: fixes bugs related to "spamming" GUIs updates (GUIs changing too quickly, e.g. holding the E key)
- - Continuous Animations: fixes bugs where frames of the fade in/out animation was skipped, or animation was suddenly reset
+ - Continuous Animations: fixes bugs where frames of the fade in/out animation were skipped, or animation was suddenly reset
  - Simpler Logic: uses fewer Mixins, thus enabling more compatibility
  - Fix Persistant Blur Issues: Fixes bugs were the blur effect was not cleared even after closing all GUIs
 
 Download now on [Modrinth](https://modrinth.com/mod/blur-perfected)
 
 
-### original README
+### Original README
 
 Ever thought that the world behind your inventory was just too distracting?  
 Or that the default Minecraft blur effect is just too boring?  
