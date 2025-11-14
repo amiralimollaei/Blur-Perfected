@@ -5,69 +5,63 @@ import eu.midnightdust.blur.util.RainbowColor;
 import eu.midnightdust.lib.util.MidnightColorUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.Screen;
 import org.joml.Math;
 import org.joml.Matrix3x2f;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.Color;
-import java.lang.Double;
 
-import static eu.midnightdust.blur.BlurInfo.*;
 import static eu.midnightdust.blur.util.RainbowColor.hue;
 import static eu.midnightdust.blur.util.RainbowColor.hue2;
 
 public class Blur {
-    public static final String MOD_ID = "blur";
+    public static final String MOD_ID = "blurperfected";
+    public static final Logger logger = LoggerFactory.getLogger(MOD_ID);
     public static void init() {
         BlurConfig.init(MOD_ID, BlurConfig.class);
     }
 
-    public static boolean doFade = false;
+    public static long lastRender = -1;
+    public static long deltaTime = -1;
+    public static float fadeTimeState = 1.0F;
+    public static float fadeProgress = 1.0F;
+    public static boolean screenHasBlur = false;
 
-    public static void onRender() {
-        if (!BlurInfo.doTest && BlurInfo.screenChanged) { // After the tests for blur and background color have been completed
-            Blur.onScreenChange();
-            BlurInfo.screenChanged = false;
-        }
-        BlurInfo.doTest = false; // Set the test state to completed, as tests will happen in the same tick.
-    }
-    public static void renderFadeout(DrawContext context, int width, int height, MinecraftClient client) {
-        if (BlurInfo.start >= 0 && !BlurInfo.screenHasBlur && BlurInfo.prevScreenHasBlur) { // Fade out in non-blurred screens
-            client.gameRenderer.renderBlur();
+    private static final MinecraftClient client = MinecraftClient.getInstance();
 
-            if (BlurInfo.prevScreenHasBackground && BlurConfig.useGradient) Blur.renderRotatedGradient(context, width, height);
-        }
-    }
-
-    public static void onScreenChange() {
-        if (screenHasBlur) {
-            if (doFade) {
-                start = System.currentTimeMillis();
-                doFade = false;
-            }
-        } else if (prevScreenHasBlur && BlurConfig.fadeOutTimeMillis > 0) {
-            start = System.currentTimeMillis();
-            doFade = true;
+    public static void onRender(DrawContext context) {
+        long currentTime = System.currentTimeMillis();
+        if (lastRender <= 0) {
+            lastRender = currentTime;
+            deltaTime = 0;
         } else {
-            start = -1;
-            doFade = true;
+            deltaTime = System.currentTimeMillis() - lastRender;
+            lastRender = currentTime;
+        }
+
+        Blur.updateFadeAnimation(context);
+
+        if (fadeTimeState > 0.001F) {
+            // context.applyBlur();
+            client.gameRenderer.renderBlur();
         }
     }
 
-    public static void updateProgress(boolean fadeIn) {
-        double x;
-        if (fadeIn) {
-            x = Math.min((System.currentTimeMillis() - start) / (double) BlurConfig.fadeTimeMillis, 1);
+    public static void onScreenChange(Screen newScreen) {
+        screenHasBlur = false;
+    }
+
+    public static void updateFadeAnimation(DrawContext context) {
+        if (screenHasBlur) {
+            fadeTimeState += deltaTime / (float) BlurConfig.fadeTimeMillis;
         }
         else {
-            x = Math.max(1 + (start - System.currentTimeMillis()) / (double) BlurConfig.fadeOutTimeMillis, 0);
-            if (x <= 0) {
-                start = -1;
-            }
+            fadeTimeState -= deltaTime / (float) BlurConfig.fadeOutTimeMillis;
         }
-        x = BlurConfig.animationCurve.apply(x, fadeIn);
-        x = Math.clamp(0, 1, x);
-
-        progress = Double.valueOf(x).floatValue();
+        fadeTimeState = Math.clamp(0, 1, fadeTimeState);
+        fadeProgress = BlurConfig.animationCurve.apply((double) fadeTimeState).floatValue();
     }
 
     public static int getBackgroundColor(boolean second) {
@@ -77,11 +71,8 @@ public class Blur {
         int r = (col.getRGB() >> 16) & 0xFF;
         int b = (col.getRGB() >> 8) & 0xFF;
         int g = col.getRGB() & 0xFF;
-        float prog = progress;
+        float prog = fadeProgress;
         a = (int) (prog * a);
-        r = (int) (prog * r);
-        g = (int) (prog * g);
-        b = (int) (prog * b);
         return a << 24 | r << 16 | b << 8 | g;
     }
     public static int getRotation() {

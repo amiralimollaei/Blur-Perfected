@@ -1,5 +1,7 @@
 package eu.midnightdust.blur.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import eu.midnightdust.blur.Blur;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.SimpleOption;
 import org.spongepowered.asm.mixin.Final;
@@ -18,5 +20,10 @@ public abstract class MixinGameOptions {
         if (this.menuBackgroundBlurriness == null && this.chatLineSpacing != null)
             return new SimpleOption.ValidatingIntSliderCallbacks(minInclusive, 20);
         return new SimpleOption.ValidatingIntSliderCallbacks(minInclusive, maxInclusive);
+    }
+
+    @ModifyReturnValue(method = "getMenuBackgroundBlurrinessValue", at = @At("RETURN"))
+    private int blur$applyFadeProgress(int original) {
+        return (int) (original * Blur.fadeProgress);
     }
 }

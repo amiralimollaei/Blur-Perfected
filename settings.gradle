@@ -12,4 +12,4 @@ include("fabric")
 include("neoforge")
 //include("quilt")
 
-rootProject.name = "blur"
+rootProject.name = "Blur Perfected"

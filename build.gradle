@@ -46,7 +46,7 @@ allprojects {
 	ext {
 		releaseChangelog = {
 			def changes = new StringBuilder()
-			changes << "## Blur+ v$project.version for $project.minecraft_version\n[View the changelog](https://www.github.com/Motschen/Blur/commits/)"
+			changes << "## Blur+ v$project.version for $project.minecraft_version\n[View the changelog](https://www.github.com/amiralimollaei/Blur-Perfected/commits/)"
 			def proc = "git log --max-count=1 --pretty=format:%s".execute()
 			proc.in.eachLine { line ->
 				def processedLine = line.toString()
