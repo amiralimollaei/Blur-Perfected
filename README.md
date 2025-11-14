@@ -3,7 +3,7 @@ A fork of Blur+ that fixes blur animation calculation bugs and simplifies the lo
 
 Changes made:
  - Spam Proof: fixes bugs related to "spamming" GUIs updates (GUIs changing too quickly, e.g. holding the E key)
- - Smoother animations: fixes bugs where frames of the fade in/out animation was skipped
+ - Continuous Animations: fixes bugs where frames of the fade in/out animation was skipped, or animation was suddenly reset
  - Simpler Logic: uses fewer Mixins, thus enabling more compatibility
  - Fix Persistant Blur Issues: Fixes bugs were the blur effect was not cleared even after closing all GUIs
 
