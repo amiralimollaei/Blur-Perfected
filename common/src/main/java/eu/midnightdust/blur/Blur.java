@@ -29,8 +29,6 @@ public class Blur {
     public static float fadeProgress = 1.0F;
     public static boolean screenHasBlur = false;
 
-    private static final MinecraftClient client = MinecraftClient.getInstance();
-
     public static void onRender(DrawContext context) {
         long currentTime = System.currentTimeMillis();
         if (lastRender <= 0) {
@@ -42,11 +40,6 @@ public class Blur {
         }
 
         Blur.updateFadeAnimation(context);
-
-        if (fadeTimeState > 0.001F) {
-            // context.applyBlur();
-            client.gameRenderer.renderBlur();
-        }
     }
 
     public static void onScreenChange(Screen newScreen) {
