@@ -21,6 +21,8 @@ public abstract class MixinTitleScreen extends Screen {
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/TitleScreen;renderPanoramaBackground(Lnet/minecraft/client/gui/DrawContext;F)V"))
     private void blur$renderTitleBlur(DrawContext context, int mouseX, int mouseY, float deltaTicks, CallbackInfo ci) {
+        if (Blur.fadeTimeState < 0.001F) return;  // we have faded out at this point and don't need to render anything
+        context.applyBlur();
         if (BlurConfig.useGradient) {
             // render the fade out gradient if fading out
             Window window = MinecraftClient.getInstance().getWindow();

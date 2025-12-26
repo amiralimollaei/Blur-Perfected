@@ -19,20 +19,20 @@ config = "blur.mixins.json"
 [[dependencies.blurperfected]]
 modId = "neoforge"
 mandatory = true
-versionRange = "[21.0,)"
+versionRange = "[21.11,)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.blurperfected]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.21.6,)"
+versionRange = "[1.21.11,)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.blurperfected]]
 modId = "midnightlib"
 mandatory = true
-versionRange = "[1.7.3,)"
+versionRange = "[1.9.2,)"
 ordering = "NONE"
 side = "CLIENT"

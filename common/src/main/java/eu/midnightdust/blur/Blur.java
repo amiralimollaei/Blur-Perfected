@@ -68,10 +68,12 @@ public class Blur {
         a = (int) (prog * a);
         return a << 24 | r << 16 | b << 8 | g;
     }
+
     public static int getRotation() {
         if (BlurConfig.rainbowMode) return RainbowColor.rotation;
         return BlurConfig.gradientRotation;
     }
+
     public static void renderRotatedGradient(DrawContext context, int width, int height) {
         float diagonal = Math.sqrt((float) width*width + height*height);
         int smallestDimension = Math.min(width, height);

@@ -15,8 +15,8 @@ public abstract class MixinGameOptions {
     @Shadow @Final private SimpleOption<Integer> menuBackgroundBlurriness;
     @Shadow @Final private SimpleOption<Double> chatLineSpacing;
 
-    @Redirect(method = "<init>", at = @At(value = "NEW", target = "net/minecraft/client/option/SimpleOption$ValidatingIntSliderCallbacks", ordinal = 3))
-    private SimpleOption.ValidatingIntSliderCallbacks blur$increaseMaxBlurriness(int minInclusive, int maxInclusive, boolean applyValueImmediately) {
+    @Redirect(method = "<init>", at = @At(value = "NEW", target = "net/minecraft/client/option/SimpleOption$ValidatingIntSliderCallbacks", ordinal = 5))
+    private SimpleOption.ValidatingIntSliderCallbacks blur$increaseMaxBlurriness(int minInclusive, int maxInclusive) {
         if (this.menuBackgroundBlurriness == null && this.chatLineSpacing != null)
             return new SimpleOption.ValidatingIntSliderCallbacks(minInclusive, 20);
         return new SimpleOption.ValidatingIntSliderCallbacks(minInclusive, maxInclusive);

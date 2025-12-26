@@ -35,6 +35,6 @@
   ],
   "depends": {
     "minecraft": ">=1.21.11",
-    "midnightlib": ">=1.7.3"
+    "midnightlib": ">=1.9.2"
   }
 }

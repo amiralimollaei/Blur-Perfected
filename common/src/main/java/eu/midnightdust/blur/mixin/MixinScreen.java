@@ -3,11 +3,8 @@ package eu.midnightdust.blur.mixin;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import eu.midnightdust.blur.config.BlurConfig;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -21,8 +18,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Screen.class)
 public abstract class MixinScreen {
-    @Shadow @Final protected Text title;
-    @Shadow protected MinecraftClient client;
     @Shadow public int width;
     @Shadow public int height;
     @Shadow protected abstract void applyBlur(DrawContext context);
@@ -32,13 +27,10 @@ public abstract class MixinScreen {
         Blur.onRender(context);
     }
 
-    @Inject(at = @At("HEAD"), method = "applyBlur", cancellable = true)
+    @Inject(at = @At("HEAD"), method = "applyBlur")
     public void blur$getBlurEnabled(CallbackInfo ci) {
-        if (BlurConfig.forceDisabledScreens.contains(this.getClass().getCanonicalName())) {
-            ci.cancel(); return;
-        }
-        if (!BlurConfig.excludedScreens.contains(this.getClass().getCanonicalName())) {
-            Blur.screenHasBlur = true; // set if the screen has blur
+        if (!BlurConfig.forceDisabledScreens.contains(this.getClass().getCanonicalName())) {
+            Blur.screenHasBlur = true;  // set if the screen has blur
         }
     }
 
@@ -55,6 +47,8 @@ public abstract class MixinScreen {
     }
     @Unique
     private void blur$renderBackground(DrawContext context) {
+        if (Blur.fadeTimeState < 0.001F) return;  // we have faded out at this point and don't need to render anything
+
         if (BlurConfig.forceEnabledScreens.contains(this.getClass().getCanonicalName())) {
             this.applyBlur(context);
         }

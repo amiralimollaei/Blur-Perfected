@@ -22,11 +22,11 @@ public class MixinInGameHud {
     public void blur$renderFadeOut(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) { // Adds a fade-out effect when a player is in a world and closes all screens
         if (client.currentScreen == null && client.world != null) {
             Blur.screenHasBlur = false;
-            if (Blur.fadeTimeState > 0.001F) {
-                context.applyBlur();
-            }
             Blur.onRender(context);
 
+            if (Blur.fadeTimeState < 0.001F) return;  // we have faded out at this point and don't need to render anything
+
+            context.applyBlur();
             if (BlurConfig.useGradient) {
                 // render the fade out gradient
                 Window window = client.getWindow();
