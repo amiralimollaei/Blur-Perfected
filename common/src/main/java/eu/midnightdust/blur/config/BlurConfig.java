@@ -70,7 +70,7 @@ public class BlurConfig extends MidnightConfig {
         // Thank you very much!
 
         FLAT(x -> x),
-        SINE(x -> 1 - cos(x * PI) / 2),
+        SINE(x -> 0.5 - cos(x * PI) / 2),
         QUAD(x -> x * x),
         CUBIC(x -> x * x * x),
         QUART(x -> x * x * x * x),
