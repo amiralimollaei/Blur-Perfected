@@ -28,10 +28,15 @@ public abstract class MixinScreen {
     }
 
     @Inject(at = @At("HEAD"), method = "applyBlur")
-    public void blur$getBlurEnabled(CallbackInfo ci) {
+    public void blur$onScreenApplyBlurStart(CallbackInfo ci) {
         if (!BlurConfig.forceDisabledScreens.contains(this.getClass().getCanonicalName())) {
             Blur.screenHasBlur = true;  // set if the screen has blur
         }
+    }
+
+    @Inject(at = @At("TAIL"), method = "applyBlur")
+    public void blur$onScreenApplyBlurEnd(CallbackInfo ci) {
+        Blur.blurApplied = true;
     }
 
     @WrapOperation(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/Screen;renderBackgroundTexture(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/util/Identifier;IIFFII)V"), method = "renderDarkening(Lnet/minecraft/client/gui/DrawContext;IIII)V")
@@ -49,7 +54,7 @@ public abstract class MixinScreen {
     private void blur$renderBackground(DrawContext context) {
         if (Blur.fadeTimeState < 0.001F) return;  // we have faded out at this point and don't need to render anything
 
-        if (BlurConfig.forceEnabledScreens.contains(this.getClass().getCanonicalName())) {
+        if (!Blur.blurApplied && BlurConfig.forceEnabledScreens.contains(this.getClass().getCanonicalName())) {
             this.applyBlur(context);
         }
 

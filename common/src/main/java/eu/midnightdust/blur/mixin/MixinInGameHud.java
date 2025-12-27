@@ -25,7 +25,6 @@ public class MixinInGameHud {
             Blur.onRender(context);
 
             if (Blur.fadeTimeState < 0.001F) return;  // we have faded out at this point and don't need to render anything
-
             context.applyBlur();
             if (BlurConfig.useGradient) {
                 // render the fade out gradient

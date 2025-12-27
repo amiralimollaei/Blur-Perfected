@@ -28,6 +28,7 @@ public class Blur {
     public static float fadeTimeState = 1.0F;
     public static float fadeProgress = 1.0F;
     public static boolean screenHasBlur = false;
+    public static boolean blurApplied = false;
 
     public static void onRender(DrawContext context) {
         long currentTime = System.currentTimeMillis();
@@ -40,10 +41,12 @@ public class Blur {
         }
 
         Blur.updateFadeAnimation(context);
+        blurApplied = false;
     }
 
     public static void onScreenChange(Screen newScreen) {
         screenHasBlur = false;
+        blurApplied = false;
     }
 
     public static void updateFadeAnimation(DrawContext context) {
