@@ -1,6 +1,6 @@
 package eu.midnightdust.blur.animations.impl;
 
-import eu.midnightdust.blur.animations.AbstractAnimationHandler;
+import eu.midnightdust.blur.animations.AbstractEMAAnimationHandler;
 import eu.midnightdust.blur.animations.AnimationState;
 import eu.midnightdust.blur.animations.IAnimationHandler;
 import eu.midnightdust.blur.config.BlurConfig;
@@ -8,7 +8,7 @@ import eu.midnightdust.lib.util.MidnightColorUtil;
 
 import java.awt.*;
 
-public class GradientAnimationHandler extends AbstractAnimationHandler<GradientAnimationState> implements IAnimationHandler<GradientAnimationState> {
+public class GradientAnimationHandler extends AbstractEMAAnimationHandler<GradientAnimationState> implements IAnimationHandler<GradientAnimationState> {
     private static float rotation = (float) BlurConfig.gradientRotation;
     private static float hue1 = 0.0F;
     private static float hue2 = 0.35F;

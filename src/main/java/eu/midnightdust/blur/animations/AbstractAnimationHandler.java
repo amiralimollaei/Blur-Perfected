@@ -4,9 +4,9 @@ import eu.midnightdust.blur.config.BlurConfig;
 import org.joml.Math;
 
 public abstract class AbstractAnimationHandler<E extends Enum<E>> implements IAnimationHandler<E> {
-    private float timeState = 0.0F;
-    private float progress = 0.0F;
-    private E state = null;
+    protected float timeState = 0.0F;
+    protected float progress = 0.0F;
+    protected E state = null;
 
     public AnimationState stepAnimation(float deltaSeconds, BlurConfig.Easing easing, AnimationState oldAnimationState) {
         return oldAnimationState;
