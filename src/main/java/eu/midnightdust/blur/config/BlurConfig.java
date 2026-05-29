@@ -34,6 +34,8 @@ public class BlurConfig extends MidnightConfig {
     @Entry(category = SCREENS)
     public static boolean blurTitleScreen = false;
     @Entry(category = SCREENS)
+    public static boolean blurDeathScreen = false;
+    @Entry(category = SCREENS)
     public static boolean darkenTitleScreen = false;
     @Comment(category = SCREENS, centered = true)
     public static Comment _advanced;
